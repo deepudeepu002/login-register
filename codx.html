@@ -88,12 +88,12 @@
              </div>
              <div class="box">
                 <label for="password">Password</label>
-                <input type="text" name="password" id="password">
+                <input type="password" name="password" id="password">
                 <div class="error"></div>
              </div>
              <div class="box">
                 <label for="password">Confirm Password</label>
-                <input type="text" name="psw" id="psw">
+                <input type="password" name="psw" id="psw">
                 <div class="error"></div>
              </div>
              <button class="btn">Register Now</button>
@@ -124,13 +124,25 @@
             box.classList.add("error");
             box.classList.remove("success");
         }
-        const setSuccess = (ele, msg)=>{
+        const setSuccess = (ele)=>{
             let box = ele.parentElement;
             let error = box.querySelector(".error");
 
             error.innerText = "";
             box.classList.add("success");
             box.classList.remove("error");
+        }
+        const mailFormat = (e)=>{
+            const re = /\w+@\w+.\w+/
+            return re.test(String(e).toLowerCase())
+        }
+        const passFormat = (p)=>{
+            const re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+            return re.test(p)
+        }
+        const userFormat = (u)=>{
+            const re = /[^0-9]/
+            return re.test(u)
         }
         function validation(){
             let user = username.value.trim();
@@ -142,6 +154,35 @@
             localStorage.setItem("Email", mail);
             localStorage.setItem("Password", pass1);
             localStorage.setItem("CPassword", pass2);
+
+            if (user === "") {
+                setError(username, "Username is required");           
+            }else if(!userFormat(user)){
+                setError(username, "Digital are not allowed");
+            }else{
+                setSuccess(username)
+            }
+            if (mail === "") {
+                setError(email, "Email is required")
+            } else if (!mailFormat(mail)){
+                setError(email, "Please enter a valid email")
+            } else {
+                setSuccess(email)
+            }
+            if (pass1 === "") {
+                setError(password, "Password is required")
+            } else if (!mailFormat(pass1)){
+                setError(password, "Password must contain minumum 8 charaters including number, lower, upper and special charaters")
+            } else {
+                setSuccess(password)
+            }
+            if (pass2 === "") {
+                setError(psw, "Please confirm your password")
+            } else if (!mailFormat(pass2)){
+                setError(psw, "Password doesn't match")
+            } else {
+                setSuccess(psw)
+            }
         }
     </script>
 </body>
